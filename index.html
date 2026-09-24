@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이보람 작품집</title>
+<meta name="description" content="이보람의 캐릭터챗 작품집">
+<base href="https://so778863.github.io/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14110e;
+    --wood: #3a2a1e;
+    --wood-edge: #24190f;
+    --text: #efe8dc;
+    --muted: #a89c8a;
+    --ink: #221c16;
+    --accent: #c8412d;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: "Noto Sans KR", sans-serif; }
+  header { text-align: center; padding: 48px 16px 28px; }
+  header h1 { font-family: "Noto Serif KR", serif; font-size: clamp(28px, 5vw, 40px); margin: 0 0 6px; }
+  header p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  /* 레코드판 공통 */
+  .disc {
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, transparent 30%, rgba(255,255,255,0.05) 31%, transparent 32%),
+      repeating-radial-gradient(circle, #111 0 2px, #1c1c1c 2px 3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .label { width: 36%; height: 36%; border-radius: 50%; background-size: cover; background-position: center; position: relative; box-shadow: 0 0 0 3px #0b0b0b; }
+  .label::after { content: ""; position: absolute; top: 50%; left: 50%; width: 9%; height: 9%; transform: translate(-50%, -50%); border-radius: 50%; background: #d8d0c2; }
+
+  /* 턴테이블 */
+  .deck {
+    max-width: 960px; margin: 0 auto; padding: 0 16px;
+    display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 40px; align-items: center;
+  }
+  .plinth {
+    position: relative; aspect-ratio: 1.12;
+    background: linear-gradient(160deg, #4a3624, var(--wood) 40%, var(--wood-edge));
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .platter {
+    position: absolute; left: 6%; top: 7%; width: 76%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, #2b2b2b 0 20%, #1a1a1a 21% 100%);
+    box-shadow: 0 0 0 6px #6b6158, 0 0 0 8px #2a241f;
+  }
+  .platter::after { content: ""; position: absolute; top: 50%; left: 50%; width: 3%; height: 3%; transform: translate(-50%, -50%); border-radius: 50%; background: #bdb3a4; }
+  #deck-disc { position: absolute; inset: 1%; opacity: 0; }
+  #deck-disc.on { opacity: 1; }
+  #deck-disc.spin { animation: spin 1.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .arm-base { position: absolute; right: 7%; top: 8%; width: 13%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #d9d1c5 0 30%, #8b8176 31% 100%); box-shadow: 0 4px 8px rgba(0,0,0,0.5); z-index: 3; }
+  .arm {
+    position: absolute; right: 13.2%; top: 14%; width: 2.2%; height: 64%;
+    background: linear-gradient(90deg, #a9a094, #e6dfd4, #a9a094);
+    border-radius: 4px;
+    transform-origin: 50% 0;
+    transform: rotate(-6deg);
+    transition: transform 0.8s cubic-bezier(.4,.1,.2,1);
+    z-index: 2;
+  }
+  .arm::after { content: ""; position: absolute; bottom: -4%; left: 50%; width: 360%; height: 11%; transform: translateX(-50%) rotate(-18deg); background: #2e2a26; border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+  .arm.play { transform: rotate(24deg); }
+  .knob { position: absolute; right: 8%; bottom: 8%; width: 7%; aspect-ratio: 1; border-radius: 50%; background: #1d1712; box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); }
+  .led { position: absolute; left: 7%; bottom: 7%; width: 1.6%; aspect-ratio: 1; border-radius: 50%; background: #4a2a22; }
+  .led.on { background: #ff4a2e; box-shadow: 0 0 8px #ff4a2e; }
+
+  /* 재생 정보 */
+  .now { min-height: 220px; }
+  .now .eyebrow { font-size: 12px; letter-spacing: 0.16em; color: var(--muted); margin: 0 0 10px; }
+  .now h2 { font-family: "Noto Serif KR", serif; font-size: clamp(26px, 4vw, 34px); margin: 0 0 10px; }
+  .now .tag { display: inline-block; font-size: 12px; border: 1px solid #6b5f4e; color: var(--muted); border-radius: 99px; padding: 2px 10px; margin-bottom: 16px; }
+  .now .intro { font-size: 15px; line-height: 1.8; margin: 0 0 24px; }
+  .play-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--text); color: var(--ink); text-decoration: none; font-size: 14px; padding: 12px 20px; border-radius: 99px; }
+  .play-btn:hover { background: var(--accent); color: #fff; }
+  .now .body { transition: opacity 0.4s; }
+  .now .body.hide { opacity: 0; }
+  .empty { color: var(--muted); font-size: 15px; }
+
+  /* 선반 */
+  .shelf-wrap { max-width: 960px; margin: 56px auto 0; padding: 0 16px 80px; }
+  .shelf-title { font-size: 12px; letter-spacing: 0.16em; color: var(--muted); margin: 0 0 16px; }
+  .shelf {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 28px;
+    padding-bottom: 18px; border-bottom: 10px solid var(--wood-edge);
+  }
+  .album { cursor: pointer; background: none; border: 0; padding: 0; color: inherit; text-align: left; font: inherit; }
+  .album:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+  .stage { position: relative; width: 82%; aspect-ratio: 1; }
+  .stage .disc { position: absolute; top: 4%; left: 4%; width: 92%; height: 92%; transition: left 0.5s cubic-bezier(.2,.8,.2,1); }
+  .album:hover .stage .disc { left: 22%; }
+  .album.out .stage .disc { visibility: hidden; }
+  .jacket { position: absolute; inset: 0; background-size: cover; background-position: center; border-radius: 3px; box-shadow: 0 8px 18px rgba(0,0,0,0.55); z-index: 1; }
+  .album.out .jacket { opacity: 0.45; }
+  .album h3 { font-family: "Noto Serif KR", serif; font-size: 16px; margin: 12px 0 2px; }
+  .album .small { font-size: 12px; color: var(--muted); }
+
+  .flying { position: fixed; z-index: 50; pointer-events: none; }
+
+  @media (max-width: 720px) {
+    .deck { grid-template-columns: 1fr; gap: 24px; }
+    .plinth { max-width: 360px; width: 100%; margin: 0 auto; }
+    .now { text-align: center; min-height: 0; }
+  }
+  @media (hover: none) { .stage .disc { left: 14%; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>이보람 작품집</h1>
+  <p>선반에서 레코드를 골라 턴테이블에 올려 보세요</p>
+</header>
+
+<section class="deck">
+  <div class="plinth" id="plinth">
+    <div class="platter" id="platter">
+      <div class="disc" id="deck-disc"><div class="label" id="deck-label"></div></div>
+    </div>
+    <div class="arm" id="arm"></div>
+    <div class="arm-base"></div>
+    <div class="knob"></div>
+    <div class="led" id="led"></div>
+  </div>
+
+  <div class="now" aria-live="polite">
+    <p class="eyebrow">NOW PLAYING</p>
+    <div class="body" id="now-body">
+      <p class="empty">아직 올려진 레코드가 없어요.</p>
+    </div>
+  </div>
+</section>
+
+<section class="shelf-wrap">
+  <p class="shelf-title">RECORD SHELF</p>
+  <div class="shelf" id="shelf"></div>
+</section>
+
+<script>
+  // 작품 목록 — 새 작품은 여기에 한 덩어리 추가
+  const works = [
+    { title: "행복 아파트", folder: "apt", tag: "공포 시뮬레이션",
+      intro: "🔴[LIVE 중] 야, 왔냐?ㅋㅋㅋ 빨리 들어가봐",
+      link: "https://rofan.ai/character/656758d6-36c0-4148-aa31-dc5745143488" },
+    { title: "그거", folder: "that", tag: "공포 시뮬레이션",
+      intro: "익명 미스터리 게시판 '그거'",
+      link: "https://rofan.ai/character/33649885-7ec5-4e28-93cd-05bd4bfdd41b" },
+    { title: "익명의 러브레터", folder: "letter", tag: "공포 시뮬레이션",
+      intro: "당신이 무엇을 적든 상대는 보고 있어요.",
+      link: "https://rofan.ai/character/9e6ab907-dea9-4906-a613-601f3509cfb6" }
+  ];
+
+  const img = (w, kind) => `${w.folder}/${w.folder}-${kind}.jpg`;
+  const $ = id => document.getElementById(id);
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const albums = works.map((w, i) => {
+    const el = document.createElement("button");
+    el.className = "album";
+    el.innerHTML = `
+      <div class="stage">
+        <div class="disc"><div class="label" style="background-image:url('${img(w, "label")}')"></div></div>
+        <div class="jacket" style="background-image:url('${img(w, "jacket")}')"></div>
+      </div>
+      <h3></h3><span class="small"></span>`;
+    el.querySelector("h3").textContent = w.title;
+    el.querySelector(".small").textContent = w.tag;
+    el.addEventListener("click", () => request(i));
+    $("shelf").appendChild(el);
+    return el;
+  });
+
+  let current = null;   // 턴테이블에 올라간 작품 번호
+  let busy = false;
+  let queued = null;    // 연출 중에 누른 작품은 끝나고 이어서
+
+  function request(i) {
+    if (busy) { queued = i; return; }
+    run(i);
+  }
+
+  async function run(i) {
+    busy = true;
+    const prev = current;
+    if (prev !== null) await takeOff();
+    if (i !== prev) await putOn(i);   // 돌고 있는 판을 다시 누르면 내리기만
+    busy = false;
+    if (queued !== null) { const n = queued; queued = null; if (n !== current) run(n); }
+  }
+
+  // 레코드 한 장을 화면 위로 날려 보내는 연출
+  function fly(labelUrl, from, to) {
+    const d = document.createElement("div");
+    d.className = "disc flying";
+    d.innerHTML = `<div class="label" style="background-image:url('${labelUrl}')"></div>`;
+    Object.assign(d.style, { left: from.left + "px", top: from.top + "px", width: from.width + "px", height: from.height + "px" });
+    document.body.appendChild(d);
+    const dx = to.left - from.left, dy = to.top - from.top, s = to.width / from.width;
+    const anim = d.animate(
+      [{ transform: "translate(0,0) scale(1) rotate(0)" },
+       { transform: `translate(${dx}px, ${dy - 40}px) scale(${(1 + s) / 2}) rotate(180deg)`, offset: 0.55 },
+       { transform: `translate(${dx}px, ${dy}px) scale(${s}) rotate(360deg)` }],
+      { duration: reduced ? 1 : 900, easing: "cubic-bezier(.5,0,.2,1)", fill: "forwards" });
+    d.style.transformOrigin = "0 0";
+    return anim.finished.then(() => d.remove());
+  }
+
+  async function putOn(i) {
+    const w = works[i];
+    const src = albums[i].querySelector(".stage .disc").getBoundingClientRect();
+    if (innerWidth <= 720) { $("plinth").scrollIntoView({ behavior: "smooth", block: "center" }); await wait(450); }
+    const src2 = albums[i].querySelector(".stage .disc").getBoundingClientRect();
+    albums[i].classList.add("out");
+    const target = $("deck-disc").getBoundingClientRect();
+    await fly(img(w, "label"), src2.width ? src2 : src, target);
+    $("deck-label").style.backgroundImage = `url('${img(w, "label")}')`;
+    $("deck-disc").classList.add("on");
+    current = i;
+    $("arm").classList.add("play");
+    await wait(reduced ? 0 : 800);
+    $("deck-disc").classList.add("spin");
+    $("led").classList.add("on");
+    showInfo(w);
+  }
+
+  async function takeOff() {
+    const i = current;
+    const body = $("now-body");
+    body.classList.add("hide");
+    $("led").classList.remove("on");
+    $("deck-disc").classList.remove("spin");
+    $("arm").classList.remove("play");
+    await wait(reduced ? 0 : 700);
+    const from = $("deck-disc").getBoundingClientRect();
+    $("deck-disc").classList.remove("on");
+    const to = albums[i].querySelector(".stage .disc").getBoundingClientRect();
+    await fly(img(works[i], "label"), from, to);
+    albums[i].classList.remove("out");
+    current = null;
+  }
+
+  function showInfo(w) {
+    const body = $("now-body");
+    body.innerHTML = `<h2></h2><span class="tag"></span><p class="intro"></p>
+      <a class="play-btn" target="_blank" rel="noopener">▶ 로판AI에서 재생하기</a>`;
+    body.querySelector("h2").textContent = w.title;
+    body.querySelector(".tag").textContent = w.tag;
+    body.querySelector(".intro").textContent = w.intro;
+    body.querySelector("a").href = w.link;
+    body.classList.remove("hide");
+  }
+</script>
+</body>
+</html>
