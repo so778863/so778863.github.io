@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>이보람 레코드</title>
+<title>lollo</title>
 <meta name="description" content="밤에만 문을 여는 레코드 가게. 판마다 다른 세계가 녹음되어 있다. 이보람의 캐릭터챗 작품집.">
-<meta property="og:title" content="이보람 레코드">
+<meta property="og:title" content="lollo">
 <meta property="og:description" content="밤에만 문을 여는 레코드 가게. 판마다 다른 세계가 녹음되어 있다.">
 <meta property="og:image" content="https://so778863.github.io/ghostdeal/ghostdeal-jacket.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Song+Myung&family=IBM+Plex+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* 이보람 레코드 — 한밤의 레코드 가게. 코너(장르)를 고르고 → 그 코너의 판 목록. 규칙은 _지침 - 아트 디렉션.md
+  /* lollo — 한밤의 레코드 가게. 코너(장르)를 고르고 → 그 코너의 판 목록. 규칙은 _지침 - 아트 디렉션.md
      판과 재킷을 "물건"처럼: 판엔 고정된 빛 반사, 재킷엔 종이결과 비닐 포장 반사광.
      장르마다 판 색이 다름. 글꼴 2개, UI 강조색은 간판 불빛 하나 */
   :root {
@@ -34,10 +34,18 @@
   [data-view][hidden] { display: none; }
 
   header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 22px; position: relative; z-index: 5; }
-  header b { font-family: var(--f-title); font-weight: 400; font-size: 22px; }
-  header b span { color: var(--lamp); text-shadow: 0 0 14px rgba(240,180,90,.55); }
-  .hours { font-size: 12px; color: var(--muted); }
-  .hours i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--lamp); box-shadow: 0 0 8px var(--lamp); margin-right: 8px; vertical-align: 1px; }
+  /* 간판 lollo: 고장 난 네온 — 마지막 o가 파르르 떨고, 가끔 간판 전체가 한 번 어두워짐 */
+  header b { font-family: var(--f-title); font-weight: 400; font-size: 26px; line-height: 1; letter-spacing: .04em; display: flex; animation: sag 9s infinite; }
+  header b span { color: var(--lamp); text-shadow: 0 0 3px rgba(255,214,150,.9), 0 0 10px rgba(240,180,90,.7), 0 0 22px rgba(240,160,70,.4); }
+  header b .buzz { animation: buzz 3.3s infinite; }
+  @keyframes buzz {
+    0%, 18%, 22%, 54%, 57%, 61%, 100% { color: var(--lamp); text-shadow: 0 0 3px rgba(255,214,150,.9), 0 0 10px rgba(240,180,90,.7), 0 0 22px rgba(240,160,70,.4); }
+    19%, 21%, 55%, 56%, 58%, 60% { color: #3d3123; text-shadow: none; }
+    20%, 59% { color: #a37a3e; text-shadow: 0 0 6px rgba(240,180,90,.35); }
+  }
+  @keyframes sag { 0%, 70%, 73%, 100% { filter: none; } 71%, 72% { filter: brightness(.45); } }
+  .hours { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; line-height: 1; color: var(--muted); }
+  .hours i { width: 7px; height: 7px; border-radius: 50%; background: var(--lamp); box-shadow: 0 0 8px var(--lamp); }
 
   /* ── 판(물건) ── */
   .vinyl { position: absolute; border-radius: 50%; aspect-ratio: 1;
@@ -137,20 +145,21 @@
   @media (prefers-reduced-motion: reduce) {
     .vinyl, .sleeve { transition: none; }
     .vinyl .spin { animation: none; }
+    header b, header b .buzz { animation: none; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <b>이보람 <span>레코드</span></b>
+    <b aria-label="lollo"><span>l</span><span>o</span><span>l</span><span>l</span><span class="buzz">o</span></b>
     <span class="hours"><i></i>밤 11시 — 새벽 4시 영업</span>
   </header>
 
   <!-- 1단계: 코너 고르기 -->
   <main data-view="crates" id="v-crates">
-    <h1 class="intro-line">오늘 밤은 어느 코너로 갈까요?</h1>
-    <p class="intro-sub">판 묶음을 고르면 그 코너의 판들을 보여 드려요.</p>
+    <h1 class="intro-line">Choose Your Corner</h1>
+    <p class="intro-sub">Explore the Collection</p>
     <div class="crates" id="crates"></div>
   </main>
 
@@ -220,7 +229,7 @@
   // 코너마다 판 색. 새 장르는 여기 한 줄 추가 (없으면 아래 순서대로 자동 배정)
   const VINYL = { "공포 시뮬레이션": "#141414" };
   const SPARE = ["#d9708f", "#3f8f6a", "#d99a2b", "#3b6fb6", "#8a5cc7"];
-  const CORNER_NOTE = { "공포 시뮬레이션": "불을 끄고 들으세요." };
+  const CORNER_NOTE = { "공포 시뮬레이션": "이 밤을 감당할 수 있나요?" };
   const colorOf = g => VINYL[g] || SPARE[(GENRES.indexOf(g)) % SPARE.length];
   const $ = id => document.getElementById(id);
   const byGenre = g => WORKS.map((w, i) => i).filter(i => WORKS[i].tag === g).reverse();   // 최근 판이 위
