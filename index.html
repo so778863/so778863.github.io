@@ -157,10 +157,19 @@
       link: "https://rofan.ai/character/33649885-7ec5-4e28-93cd-05bd4bfdd41b" },
     { title: "익명의 러브레터", folder: "letter", tag: "공포 시뮬레이션",
       intro: "당신이 무엇을 적든 상대는 보고 있어요.",
-      link: "https://rofan.ai/character/9e6ab907-dea9-4906-a613-601f3509cfb6" }
+      link: "https://rofan.ai/character/9e6ab907-dea9-4906-a613-601f3509cfb6" },
+    { title: "귀신 거래", folder: "ghostdeal", tag: "공포 시뮬레이션",
+      intro: "'鬼神去來' 저주와 소원을 구매하는 사이트",
+      link: "https://rofan.ai/character/6c25e050-2cde-4b17-a068-2cda865e2b59",
+      ext: { label: "png" } },
+    { title: "444kHz", folder: "kHz", tag: "공포 시뮬레이션",
+      intro: "뒤틀린 주파수를 전송 중..",
+      link: "https://rofan.ai/character/e16a6948-ee2d-4c3e-b918-0696a0b7f525",
+      ext: { jacket: "png", label: "png" } }
   ];
 
-  const img = (w, kind) => `${w.folder}/${w.folder}-${kind}.jpg`;
+  // 확장자가 jpg가 아니면 작품에 ext: { jacket: "png" } 식으로 적기
+  const img = (w, kind) => `${w.folder}/${w.folder}-${kind}.${(w.ext && w.ext[kind]) || "jpg"}`;
   const $ = id => document.getElementById(id);
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
