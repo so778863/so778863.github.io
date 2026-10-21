@@ -3,99 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>이보람 작품집</title>
-<meta name="description" content="이보람의 캐릭터챗 작품집">
-<base href="https://so778863.github.io/">
+<title>이보람 레코드</title>
+<meta name="description" content="밤에만 문을 여는 레코드 가게. 판마다 다른 세계가 녹음되어 있다. 이보람의 캐릭터챗 작품집.">
+<meta property="og:title" content="이보람 레코드">
+<meta property="og:description" content="밤에만 문을 여는 레코드 가게. 판마다 다른 세계가 녹음되어 있다.">
+<meta property="og:image" content="https://so778863.github.io/ghostdeal/ghostdeal-jacket.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Do+Hyeon&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Song+Myung&family=IBM+Plex+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* 주크박스: 위 유리 돔에서 판이 돌고, 아래 번호 띠(장르=알파벳 줄)에서 작품을 고른다 */
+  /* 이보람 레코드 — 한밤의 레코드 가게. 코너(장르)를 고르고 → 그 코너의 판 목록. 규칙은 _지침 - 아트 디렉션.md
+     판과 재킷을 "물건"처럼: 판엔 고정된 빛 반사, 재킷엔 종이결과 비닐 포장 반사광.
+     장르마다 판 색이 다름. 글꼴 2개, UI 강조색은 간판 불빛 하나 */
   :root {
-    --bg: #140e1a;
-    --cab: #2a1c30;
-    --chrome: #d6dbe0;
-    --amber: #ffb547;
-    --cherry: #e8455a;
-    --blue: #3d6fb5;
-    --strip: #f4efe4;
-    --ink: #1b1420;
-    --muted: #b9a9c4;
+    --night: #0b0a0c;
+    --panel: rgba(20,19,22,.82);
+    --line: #29272c;
+    --text: #ece8e0;
+    --muted: #8e8992;
+    --lamp: #f0b45a;
+    --f-title: "Song Myung", "Noto Serif KR", serif;
+    --f-body: "IBM Plex Sans KR", "Noto Sans KR", sans-serif;
     color-scheme: dark;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--chrome); font-family: "Noto Sans KR", sans-serif; }
-  main { padding: 40px 16px 56px; }
+  body { overflow-x: clip; margin: 0; min-height: 100vh; background: radial-gradient(ellipse 60% 45% at 30% 20%, #1a1719, transparent 70%), var(--night); color: var(--text); font-family: var(--f-body); font-size: 15px; line-height: 1.7; }
+  button { font: inherit; color: inherit; }
+  a { color: inherit; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); }
+  :focus-visible { outline: 2px solid var(--lamp); outline-offset: 4px; }
+  [data-view][hidden] { display: none; }
 
-  .cabinet {
-    max-width: 760px; margin: 0 auto; background: linear-gradient(180deg, #3a2541, var(--cab) 40%);
-    border: 6px solid var(--chrome); border-radius: 380px 380px 24px 24px / 300px 300px 24px 24px;
-    padding: 40px clamp(14px, 4vw, 40px) 30px;
-    box-shadow: 0 0 0 2px #7d6a88, 0 0 60px rgba(232,69,90,.25), 0 30px 60px rgba(0,0,0,.6);
-  }
-  h1 { text-align: center; margin: 6px 0 0; font-family: "Monoton", "Do Hyeon", sans-serif; font-weight: 400; font-size: clamp(30px, 7vw, 54px); color: var(--amber); text-shadow: 0 0 6px var(--amber), 0 0 22px rgba(255,181,71,.6); }
-  .sub { text-align: center; margin: 4px 0 22px; color: var(--muted); font-size: 14px; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 22px; position: relative; z-index: 5; }
+  header b { font-family: var(--f-title); font-weight: 400; font-size: 22px; }
+  header b span { color: var(--lamp); text-shadow: 0 0 14px rgba(240,180,90,.55); }
+  .hours { font-size: 12px; color: var(--muted); }
+  .hours i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--lamp); box-shadow: 0 0 8px var(--lamp); margin-right: 8px; vertical-align: 1px; }
 
-  /* 유리 돔 */
-  .dome { background: radial-gradient(ellipse at 50% 30%, #3b2a46, #160f1c 75%); border: 2px solid #7d6a88; border-radius: 200px 200px 14px 14px; padding: 26px 18px 20px; display: grid; gap: 10px; justify-items: center; }
-  .readout { font-family: "Share Tech Mono", monospace; color: var(--cherry); background: #0b070e; border: 1px solid #4b3a55; padding: 6px 14px; border-radius: 4px; letter-spacing: .12em; font-size: 15px; text-shadow: 0 0 8px rgba(232,69,90,.7); }
-  .dome h2 { margin: 0; font-family: "Do Hyeon", sans-serif; font-weight: 400; font-size: 28px; color: #fff; text-align: center; }
-  .dome .tag { margin: -6px 0 0; font-size: 13px; color: var(--muted); }
-  .dome .intro { margin: 0; color: var(--muted); text-align: center; line-height: 1.6; max-width: 34ch; }
-  .play { margin-top: 6px; background: var(--cherry); color: #fff; text-decoration: none; font-family: "Do Hyeon", sans-serif; font-size: 18px; padding: 10px 22px; border-radius: 99px; box-shadow: 0 0 16px rgba(232,69,90,.5); }
-  .play:hover { background: #f05a6d; }
-
-  /* 레코드(재킷 + 판) */
-  .player { position: relative; width: min(100%, 230px); aspect-ratio: 1; }
-  .disc { position: absolute; inset: 4%; border-radius: 50%; background: repeating-radial-gradient(circle, #101010 0 2px, #1e1e1e 2px 3px); display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0,0,0,.6); transition: transform .7s cubic-bezier(.2,.7,.2,1); }
-  .label { width: 38%; aspect-ratio: 1; border-radius: 50%; background-size: cover; background-position: center; animation: spin 5s linear infinite; }
-  .sleeve { position: absolute; inset: 0 24% 0 0; background-size: cover; background-position: center; border-radius: 2px; box-shadow: 4px 6px 16px rgba(0,0,0,.55); transition: opacity .3s; }
-  .player.out .disc { transform: translateX(24%); }
-  .player.swap .sleeve { opacity: 0; }
+  /* ── 판(물건) ── */
+  .vinyl { position: absolute; border-radius: 50%; aspect-ratio: 1;
+    background:
+      radial-gradient(circle, transparent 0 33%, rgba(0,0,0,.35) 33.4%, transparent 35%),
+      repeating-radial-gradient(circle, rgba(255,255,255,.04) 0 1px, rgba(0,0,0,.06) 1px 2.6px),
+      radial-gradient(circle, var(--v, #111) 0 55%, color-mix(in srgb, var(--v, #111) 62%, #000) 100%);
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.07), 0 24px 40px rgba(0,0,0,.65);
+    transition: transform .9s cubic-bezier(.2,.7,.15,1); }
+  .vinyl.clear { opacity: .93; }
+  .vinyl .spin { position: absolute; inset: 0; border-radius: 50%; animation: spin 2.2s linear infinite; animation-play-state: paused; }
+  .vinyl .lbl { position: absolute; left: 34%; top: 34%; width: 32%; aspect-ratio: 1; border-radius: 50%; background-size: cover; background-position: center; box-shadow: 0 0 0 3px rgba(0,0,0,.25); }
+  .vinyl .lbl::after { content: ""; position: absolute; left: 50%; top: 50%; width: 9%; aspect-ratio: 1; border-radius: 50%; background: #0b0a0c; transform: translate(-50%, -50%); box-shadow: inset 0 1px 1px rgba(255,255,255,.2); }
+  /* 빛은 고정, 판만 돎 */
+  .vinyl .sheen { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; mix-blend-mode: screen;
+    background: conic-gradient(from 300deg, transparent 0 3%, rgba(255,255,255,.30) 8%, transparent 14%, transparent 46%, rgba(255,255,255,.18) 52%, transparent 59%);
+    -webkit-mask: radial-gradient(circle, transparent 0 34%, #000 35% 98%, transparent 99%); mask: radial-gradient(circle, transparent 0 34%, #000 35% 98%, transparent 99%); }
+  .vinyl.playing .spin { animation-play-state: running; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* 번호 띠 */
-  .rack { margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
-  .rack h3 { margin: 0 0 8px; font-family: "Share Tech Mono", monospace; font-weight: 400; font-size: 13px; letter-spacing: .14em; color: var(--amber); }
-  .strips { display: grid; gap: 6px; }
-  .strip {
-    display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 10px; width: 100%;
-    background: var(--strip); color: var(--ink); border: 0; border-top: 4px solid var(--cherry); border-bottom: 4px solid var(--blue);
-    padding: 6px 10px; text-align: left; cursor: pointer; border-radius: 2px; font: inherit; transition: transform .15s, box-shadow .15s;
-  }
-  .strip:hover { transform: translateX(3px); }
-  .strip[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--amber), 0 0 18px rgba(255,181,71,.55); }
-  .strip .code { font-family: "Share Tech Mono", monospace; font-size: 15px; color: var(--cherry); }
-  .strip b { display: block; font-family: "Do Hyeon", sans-serif; font-weight: 400; font-size: 18px; line-height: 1.2; }
-  .strip small { display: block; font-size: 12px; color: #6b5d72; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .strip:focus-visible, .play:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+  /* ── 재킷(물건) ── */
+  .sleeve { position: absolute; aspect-ratio: 1; box-shadow: 0 2px 0 rgba(255,255,255,.04), 0 30px 50px rgba(0,0,0,.75); transition: transform .6s cubic-bezier(.2,.7,.2,1), opacity .4s; }
+  .sleeve .art { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  /* 종이결 */
+  .sleeve .art::after { content: ""; position: absolute; inset: 0; opacity: .22; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"); }
+  /* 비닐 포장: 사선 반사광 + 구김 */
+  .sleeve .wrap { position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(118deg, transparent 18%, rgba(255,255,255,.20) 24%, rgba(255,255,255,.04) 30%, transparent 36%, transparent 62%, rgba(255,255,255,.12) 67%, transparent 73%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='turbulence' baseFrequency='.012 .03' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 -.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+    background-size: 100% 100%, cover;
+    mix-blend-mode: screen; opacity: .85;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), inset 0 0 24px rgba(255,255,255,.05); }
+  .sticker { position: absolute; z-index: 2; background: #f3eee4; color: #1b1a1d; font-size: 12px; font-weight: 500; line-height: 1.2; padding: 7px 11px; border-radius: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.35); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .sticker i { width: 9px; height: 9px; border-radius: 50%; background: var(--v); }
 
+  /* ── 1단계: 코너 고르기 ── */
+  .intro-line { margin: clamp(8px, 3vw, 28px) 0 0; font-family: var(--f-title); font-size: clamp(30px, 5vw, 52px); font-weight: 400; line-height: 1.15; text-wrap: balance; }
+  .intro-sub { margin: 8px 0 0; color: var(--muted); }
+  .crates { display: flex; flex-wrap: wrap; gap: clamp(40px, 6vw, 90px); padding-block: clamp(40px, 6vw, 70px) 80px; }
+  .crate { border: 0; background: none; padding: 0; cursor: pointer; text-align: left; display: grid; gap: 52px; width: min(100%, 440px); }
+  .crate .pile { position: relative; width: 78%; aspect-ratio: 1; }
+  .crate .sleeve { inset: 0; }
+  .crate .s2 { transform: rotate(-9deg) translate(-6%, 3%); }
+  .crate .s1 { transform: rotate(6deg) translate(4%, -2%); }
+  .crate .s0 { transform: rotate(-1.5deg); }
+  .crate .vinyl { top: 3%; left: 3%; width: 94%; transform: translateX(34%) rotate(-1.5deg); }
+  .crate:hover .vinyl, .crate:focus-visible .vinyl { transform: translateX(46%); }
+  .crate:hover .s2 { transform: rotate(-13deg) translate(-10%, 4%); }
+  .crate:hover .s1 { transform: rotate(9deg) translate(6%, -4%); }
+  .crate .sticker { right: -4%; bottom: 8%; transform: rotate(4deg); }
+  .crate h2 { margin: 0; font-family: var(--f-title); font-weight: 400; font-size: 32px; line-height: 1.2; }
+  .crate p { margin: 4px 0 0; color: var(--muted); }
+  .crate .open { color: var(--lamp); font-size: 14px; }
+
+  /* ── 2단계: 코너 안 ── */
+  .room { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(28px, 4vw, 56px); align-items: start; padding-block: 10px 80px; }
+  .back { background: none; border: 1px solid var(--line); border-radius: 99px; padding: 8px 16px; cursor: pointer; font-size: 13px; color: var(--muted); }
+  .back:hover { color: var(--text); border-color: var(--text); }
+  .stage { position: relative; }
+  .feature { position: relative; width: min(78%, 500px); aspect-ratio: 1; margin-top: 26px; }
+  .feature .sleeve { inset: 0; transform: rotate(-2deg); }
+  .feature .vinyl { top: 3%; left: 3%; width: 94%; transform: rotate(0); }
+  .feature .vinyl.out { transform: translateX(50%); }
+  .feature.swap .sleeve { opacity: 0; transform: rotate(-6deg) translateY(16px); }
+  .now { margin-top: 36px; display: grid; gap: 10px; max-width: 520px; }
+  .now .corner { font-size: 12px; letter-spacing: .12em; color: var(--lamp); }
+  .now h1 { margin: 0; font-family: var(--f-title); font-weight: 400; font-size: clamp(40px, 6vw, 72px); line-height: 1.05; word-break: keep-all; }
+  .now p { margin: 0; font-size: 17px; color: #d8d3ca; }
+  .listen { justify-self: start; margin-top: 8px; padding: 11px 22px; border-radius: 99px; border: 1px solid var(--lamp); color: var(--lamp); text-decoration: none; }
+  .listen:hover { background: var(--lamp); color: var(--night); }
+  .listen[aria-disabled] { border-color: var(--line); color: var(--muted); pointer-events: none; }
+
+  .list { position: relative; z-index: 3; background: var(--panel); backdrop-filter: blur(14px); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  .list h2 { margin: 0 0 4px; font-family: var(--f-title); font-weight: 400; font-size: 28px; display: flex; align-items: center; gap: 10px; }
+  .list h2 i { width: 12px; height: 12px; border-radius: 50%; background: var(--v); box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 0 10px var(--v); }
+  .list .sub { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  .list ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .row { width: 100%; display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 14px; align-items: center; padding: 8px; background: none; border: 0; border-radius: 8px; text-align: left; cursor: pointer; transition: background .2s; }
+  .row:hover { background: rgba(255,255,255,.04); }
+  .row[aria-current="true"] { background: rgba(240,180,90,.10); }
+  .row .mini { position: relative; display: block; width: 58px; height: 58px; }
+  .row .mini .sleeve { left: 0; top: 0; width: 100%; height: 100%; aspect-ratio: auto; box-shadow: 0 6px 12px rgba(0,0,0,.6); }
+  /* 작은 썸네일엔 비닐·종이 효과를 빼서 흐림 패널 안에서 번지지 않게 */
+  .row .mini .wrap, .row .mini .art::after { display: none; }
+  .row b { display: block; font-weight: 500; line-height: 1.4; }
+  .row small { display: block; color: var(--muted); font-size: 13px; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .row[aria-current="true"] b { color: var(--lamp); }
+
+  @media (max-width: 860px) {
+    .room { grid-template-columns: 1fr; }
+    .feature { width: 72%; }
+    .crate { width: 100%; }
+    .hours { display: none; }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .label { animation: none; }
-    .disc, .sleeve, .strip { transition: none; }
+    .vinyl, .sleeve { transition: none; }
+    .vinyl .spin { animation: none; }
   }
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <b>이보람 <span>레코드</span></b>
+    <span class="hours"><i></i>밤 11시 — 새벽 4시 영업</span>
+  </header>
 
-<main>
-  <div class="cabinet">
-    <h1>Boram Jukebox</h1>
-    <p class="sub">이보람 작품집 · 번호를 골라 틀어 보세요</p>
-    <div class="dome" aria-live="polite">
-      <div class="player" id="player"><div class="disc"><div class="label" id="label"></div></div><div class="sleeve" id="sleeve"></div></div>
-      <span class="readout" id="readout"></span>
-      <h2 id="title"></h2>
-      <p class="tag" id="tag"></p>
-      <p class="intro" id="intro"></p>
-      <a class="play" id="play" target="_blank" rel="noopener">▶ 로판AI에서 재생</a>
+  <!-- 1단계: 코너 고르기 -->
+  <main data-view="crates" id="v-crates">
+    <h1 class="intro-line">오늘 밤은 어느 코너로 갈까요?</h1>
+    <p class="intro-sub">판 묶음을 고르면 그 코너의 판들을 보여 드려요.</p>
+    <div class="crates" id="crates"></div>
+  </main>
+
+  <!-- 2단계: 코너 안 -->
+  <main data-view="room" id="v-room" hidden>
+    <button class="back" id="back">← 코너 고르기</button>
+    <div class="room">
+      <section class="stage" aria-live="polite">
+        <div class="feature" id="feature">
+          <div class="vinyl" id="f-vinyl"><div class="spin"><div class="lbl" id="f-lbl"></div></div><div class="sheen"></div></div>
+          <div class="sleeve"><div class="art" id="f-art"></div><div class="wrap"></div></div>
+        </div>
+        <div class="now">
+          <span class="corner" id="f-corner"></span>
+          <h1 id="f-title"></h1>
+          <p id="f-intro"></p>
+          <a class="listen" id="f-go" target="_blank" rel="noopener"></a>
+        </div>
+      </section>
+      <aside class="list" id="list"></aside>
     </div>
-    <div class="rack" id="rack"></div>
-  </div>
-</main>
+  </main>
+</div>
 
 <script>
-  // 작품 추가는 여기 한 곳에서. tag가 장르이고, 처음 나온 장르 순서대로 A·B·C 줄이 생김
-  const works = [
+  // 작품 목록 — 작품 추가·수정은 여기서만.
+  // tag = 장르. 같은 tag끼리 한 코너(판 묶음)로 모이고, 아래쪽에 적을수록 최근 판으로 앞에 놓임
+  // 이미지 확장자가 jpg가 아니면 ext: { jacket: "png", label: "png" } 식으로 적기
+  const WORKS = [
     { title: "행복 아파트", folder: "apt", tag: "공포 시뮬레이션",
       intro: "🔴[LIVE 중] 야, 왔냐?ㅋㅋㅋ 빨리 들어가봐",
       link: "https://rofan.ai/character/656758d6-36c0-4148-aa31-dc5745143488" },
@@ -115,66 +199,113 @@
       ext: { jacket: "png", label: "png" } }
   ];
 
-  // 확장자가 jpg가 아니면 작품에 ext: { jacket: "png" } 식으로 적기
-  const img = (w, kind) => `${w.folder}/${w.folder}-${kind}.${(w.ext && w.ext[kind]) || "jpg"}`;
-  const $ = id => document.getElementById(id);
-  const genres = [...new Set(works.map(w => w.tag))];
-  const code = i => {
-    const w = works[i];
-    const n = works.filter(x => x.tag === w.tag).indexOf(w) + 1;
-    return String.fromCharCode(65 + genres.indexOf(w.tag)) + n;
-  };
+  // 내 컴퓨터에서 파일을 더블클릭해 열 때는 이미지를 실제 사이트에서 가져옴
+  const SITE = location.protocol === "file:" ? "https://so778863.github.io/" : "";
+  const GENRES = [...new Set(WORKS.map(w => w.tag))];
 
-  // 장르별 번호 띠
-  const strips = [];
-  genres.forEach((g, gi) => {
-    const col = document.createElement("div");
-    col.innerHTML = `<h3></h3><div class="strips"></div>`;
-    col.querySelector("h3").textContent = `${String.fromCharCode(65 + gi)} — ${g}`;
-    works.forEach((w, i) => {
-      if (w.tag !== g) return;
-      const b = document.createElement("button");
-      b.className = "strip";
-      b.innerHTML = `<span class="code"></span><span><b></b><small></small></span>`;
-      b.querySelector(".code").textContent = code(i);
-      b.querySelector("b").textContent = w.title;
-      b.querySelector("small").textContent = w.intro;
-      b.addEventListener("click", () => {
-        select(i, true);
-        if (innerWidth <= 720) document.querySelector(".dome").scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-      strips[i] = b;
-      col.querySelector(".strips").appendChild(b);
-    });
-    $("rack").appendChild(col);
+  function img(w, kind) {
+    return `${SITE}${w.folder}/${w.folder}-${kind}.${(w.ext && w.ext[kind]) || "jpg"}`;
+  }
+  // 이미지가 없으면 뒤에 깔린 그라데이션이 대신 보임
+  function bg(w, kind, fallback = "linear-gradient(135deg, #4a4150, #1c181f)") {
+    return `url('${img(w, kind)}'), ${fallback}`;
+  }
+  // 링크가 비어 있으면 버튼을 "준비 중"으로 바꿈
+  function setLink(a, w, label, emptyLabel = "링크 준비 중") {
+    if (w.link) { a.href = w.link; a.removeAttribute("aria-disabled"); a.textContent = label; }
+    else { a.removeAttribute("href"); a.setAttribute("aria-disabled", "true"); a.textContent = emptyLabel; }
+  }
+  const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 코너마다 판 색. 새 장르는 여기 한 줄 추가 (없으면 아래 순서대로 자동 배정)
+  const VINYL = { "공포 시뮬레이션": "#141414" };
+  const SPARE = ["#d9708f", "#3f8f6a", "#d99a2b", "#3b6fb6", "#8a5cc7"];
+  const CORNER_NOTE = { "공포 시뮬레이션": "불을 끄고 들으세요." };
+  const colorOf = g => VINYL[g] || SPARE[(GENRES.indexOf(g)) % SPARE.length];
+  const $ = id => document.getElementById(id);
+  const byGenre = g => WORKS.map((w, i) => i).filter(i => WORKS[i].tag === g).reverse();   // 최근 판이 위
+
+  const sleeveHTML = cls => `<div class="sleeve ${cls}"><div class="art"></div><div class="wrap"></div></div>`;
+
+  /* 1단계 */
+  GENRES.forEach(g => {
+    const ids = byGenre(g), col = colorOf(g);
+    const b = document.createElement("button");
+    b.className = "crate";
+    b.style.setProperty("--v", col);
+    b.innerHTML = `<div class="pile">${ids.length > 2 ? sleeveHTML("s2") : ""}${ids.length > 1 ? sleeveHTML("s1") : ""}
+        <div class="vinyl clear"><div class="spin"><div class="lbl"></div></div><div class="sheen"></div></div>
+        ${sleeveHTML("s0")}<span class="sticker"><i></i><span></span></span></div>
+      <div><h2></h2><p></p><span class="open">코너 들어가기 →</span></div>`;
+    const arts = { s0: ids[0], s1: ids[1], s2: ids[2] };
+    Object.entries(arts).forEach(([c, i]) => { const el = b.querySelector(`.${c} .art`); if (el) el.style.backgroundImage = bg(WORKS[i], "jacket"); });
+    b.querySelector(".lbl").style.backgroundImage = bg(WORKS[ids[0]], "label");
+    b.querySelector(".sticker span").textContent = `${g} · ${ids.length}장`;
+    b.querySelector("h2").textContent = `${g} 코너`;
+    b.querySelector("p").textContent = CORNER_NOTE[g] || "";
+    b.onclick = () => openRoom(g);
+    $("crates").appendChild(b);
   });
 
-  // 돔에 판 걸기: 재킷이 사라졌다가 새 판이 빠져나옴
-  let timer = null;
-  function select(i, animate) {
-    const w = works[i];
-    $("readout").textContent = `SELECTION ${code(i)}`;
-    $("title").textContent = w.title;
-    $("tag").textContent = w.tag;
-    $("intro").textContent = w.intro;
-    $("play").href = w.link;
-    strips.forEach((b, k) => b.setAttribute("aria-pressed", k === i));
-
-    const p = $("player");
-    const apply = () => {
-      $("sleeve").style.backgroundImage = `url('${img(w, "jacket")}')`;
-      $("label").style.backgroundImage = `url('${img(w, "label")}')`;
-    };
-    clearTimeout(timer);
-    if (!animate) { apply(); p.classList.add("out"); return; }
-    p.classList.remove("out"); p.classList.add("swap");
-    timer = setTimeout(() => {
-      apply(); p.classList.remove("swap");
-      timer = setTimeout(() => p.classList.add("out"), 250);
-    }, 330);
+  /* 2단계 */
+  let room = null, current = -1, t1, t2;
+  function openRoom(g) {
+    room = g; current = -1;
+    const ids = byGenre(g), col = colorOf(g);
+    document.body.style.setProperty("--v", col);
+    $("f-vinyl").classList.add("clear");
+    const L = $("list");
+    L.innerHTML = `<h2><i></i><span></span></h2><p class="sub"></p><ol></ol>`;
+    L.querySelector("h2 span").textContent = `${g} 코너`;
+    L.querySelector(".sub").textContent = [`${ids.length}장`, CORNER_NOTE[g]].filter(Boolean).join(" · ");
+    ids.forEach(i => {
+      const w = WORKS[i];
+      const li = document.createElement("li");
+      li.innerHTML = `<button class="row"><span class="mini">${sleeveHTML("")}</span><span><b></b><small></small></span></button>`;
+      const r = li.firstChild;
+      r.dataset.i = i;
+      r.querySelector(".art").style.backgroundImage = bg(w, "jacket");
+      r.querySelector("b").textContent = w.title;
+      r.querySelector("small").textContent = w.intro;
+      r.onclick = () => { pick(i); if (innerWidth <= 860) $("feature").scrollIntoView({ behavior: "smooth", block: "start" }); };
+      L.querySelector("ol").appendChild(li);
+    });
+    $("v-crates").hidden = true; $("v-room").hidden = false;
+    scrollTo(0, 0);
+    pick(ids[0], true);
   }
 
-  select(works.length - 1, false);   // 처음엔 가장 최근 작품이 걸려 있음
+  function pick(i, instant) {
+    if (i === current) return;
+    current = i;
+    const w = WORKS[i];
+    document.querySelectorAll(".row").forEach(r => r.setAttribute("aria-current", +r.dataset.i === i));
+    $("f-corner").textContent = `${w.tag} 코너`;
+    $("f-title").textContent = w.title;
+    $("f-intro").textContent = w.intro;
+    setLink($("f-go"), w, "로판AI에서 듣기 →");
+    const f = $("feature"), v = $("f-vinyl");
+    const apply = () => { $("f-art").style.backgroundImage = bg(w, "jacket"); $("f-lbl").style.backgroundImage = bg(w, "label"); };
+    clearTimeout(t1); clearTimeout(t2);
+    if (instant || REDUCED) { apply(); v.classList.add("out", "playing"); f.classList.remove("swap"); return; }
+    v.classList.remove("out", "playing");               // 판을 재킷 안으로 넣고
+    t1 = setTimeout(() => {
+      f.classList.add("swap");                           // 재킷을 바꿔 끼운 뒤
+      t2 = setTimeout(() => {
+        apply(); f.classList.remove("swap");
+        t1 = setTimeout(() => v.classList.add("out", "playing"), 350);   // 다시 꺼냄
+      }, 380);
+    }, 500);
+  }
+
+  $("back").onclick =() => { $("v-room").hidden = true; $("v-crates").hidden = false; scrollTo(0, 0); };
+  addEventListener("keydown", e => {
+    if ($("v-room").hidden) return;
+    if (e.key === "Escape") $("back").click();
+    const ids = byGenre(room), k = ids.indexOf(current);
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); pick(ids[Math.min(k + 1, ids.length - 1)]); }
+    if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); pick(ids[Math.max(k - 1, 0)]); }
+  });
 </script>
 </body>
 </html>
